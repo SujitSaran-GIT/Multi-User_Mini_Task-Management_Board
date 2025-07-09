@@ -4,7 +4,7 @@ import UserModel from "../models/UserModel.js";
 
 const register = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { name, email, password } = req.body;
 
     const userExists = await UserModel.findOne({ email });
     if (userExists) {
@@ -12,6 +12,7 @@ const register = async (req, res) => {
     }
 
     const user = await UserModel.create({
+      name,
       email,
       password,
     });
@@ -21,6 +22,7 @@ const register = async (req, res) => {
     
     res.status(201).json({
       _id: user._id,
+      name: user.name,
       email: user.email,
       token: token
     });
@@ -50,9 +52,7 @@ const login = async (req, res) => {
 
     res.json({
       _id: user._id,
-      name: user.name,
       email: user.email,
-      role: user.role,
       token,
     });
   } catch (error) {
