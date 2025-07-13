@@ -1,0 +1,27 @@
+services:
+  mongo:
+    image: mongodb/mongodb-community-server:latest
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  userservice:
+    build: ./userservice
+    container_name: userservice
+    ports:
+      - "8001:8001"
+    depends_on:
+      - mongo
+  
+  taskservice:
+    build: ./taskservice
+    container_name: taskservice
+    ports:
+      - "8003:8003"
+    depends_on:
+      - mongo
+
+volumes:
+  mongo_data:
